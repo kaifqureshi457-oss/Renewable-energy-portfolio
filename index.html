@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kaif Qureshi — Solar Energy, Analytics & Carbon ROI Portfolio</title>
+  <title>Kaif Qureshi — Solar Streamer, AQI & Sustainability Portfolio</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.6.1/dist/chart.umd.min.js"></script>
   <style>
     :root {
-      --bg: #f6f8fa;
-      --card: #ffffff;
-      --text: #1f2328;
-      --muted: #57606a;
-      --accent: #0969da;
-      --accent-soft: #ddf4ff;
-      --green: #1a7f37;
-      --border: #d0d7de;
+      --bg: #ffffff;
+      --surface: #f8fafc;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --accent: #0f766e;
+      --accent-soft: #f0fdfa;
     }
     * { box-sizing: border-box; }
     body {
@@ -23,41 +23,32 @@
       color: var(--text);
       line-height: 1.55;
     }
-    .container {
-      max-width: 1040px;
+    .wrap {
+      max-width: 1060px;
       margin: 0 auto;
-      padding: 28px 20px 60px;
+      padding: 32px 20px 64px;
     }
-    header.hero {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 28px;
-      margin-bottom: 20px;
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
     }
-    .badge {
-      display: inline-block;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-size: 12px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 999px;
-      margin-bottom: 10px;
-    }
-    h1 { margin: 0 0 8px; font-size: 28px; }
-    .subtitle { color: var(--muted); margin: 0 0 18px; font-size: 15px; }
-    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    h1 { margin: 0 0 6px; font-size: 28px; letter-spacing: -0.02em; }
+    .sub { margin: 0; color: var(--muted); font-size: 15px; max-width: 720px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; }
     .btn {
-      display: inline-block;
       text-decoration: none;
-      padding: 9px 15px;
-      border-radius: 8px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 6px;
       border: 1px solid var(--border);
       color: var(--text);
-      background: #fff;
+      background: var(--bg);
       cursor: pointer;
     }
     .btn.primary {
@@ -65,214 +56,369 @@
       border-color: var(--accent);
       color: #fff;
     }
-    .tabs {
+    .nav-tabs {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 18px;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+      margin: 18px 0 24px;
+      padding-bottom: 8px;
     }
-    .tab-btn {
-      padding: 9px 14px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
+    .tab {
+      background: none;
+      border: none;
+      padding: 8px 12px;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 500;
+      color: var(--muted);
       cursor: pointer;
+      border-radius: 6px;
     }
-    .tab-btn.active {
-      background: var(--text);
-      color: #fff;
-      border-color: var(--text);
+    .tab.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 600;
     }
-    .panel { display: none; }
-    .panel.active { display: block; }
-    .grid-2 {
+    .pane { display: none; }
+    .pane.active { display: block; }
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
       gap: 18px;
-    }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 22px;
       margin-bottom: 18px;
     }
-    .card h2, .card h3 { margin-top: 0; }
-    .control { margin-bottom: 14px; }
-    .control label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 5px;
-    }
-    .control input[type="range"] { width: 100%; }
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 8px;
-    }
-    .kpi {
+    .box {
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 14px;
-      background: #fafbfc;
+      padding: 20px;
+      background: var(--bg);
     }
-    .kpi .label { font-size: 12px; color: var(--muted); }
-    .kpi .val { font-size: 22px; font-weight: 700; color: var(--green); margin-top: 4px; }
-    ul { padding-left: 20px; margin: 8px 0 0; }
+    .box h2, .box h3 { margin: 0 0 12px; font-size: 17px; }
+    .field { margin-bottom: 14px; }
+    .field label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .field input[type="range"], .field select { width: 100%; }
+    .field select {
+      padding: 7px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+      font-size: 14px;
+    }
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .kpi .k-lbl { font-size: 12px; color: var(--muted); }
+    .kpi .k-val { font-size: 20px; font-weight: 700; margin-top: 2px; }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 10px; }
+    ul { margin: 8px 0 0; padding-left: 18px; }
     li { margin-bottom: 6px; }
-    .note { font-size: 13px; color: var(--muted); margin-top: 12px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header class="hero">
-      <span class="badge">Always-On Portfolio • Solar Energy • Data Analytics • Sustainability</span>
-      <h1>Kaif Qureshi — Energy & Sustainability Portfolio</h1>
-      <p class="subtitle">
-        B.Voc in Solar Energy (7.43 CGPA) with hands-on experience in data analytics, automated reporting,
-        PV & AutoCAD layout work, urban air quality (AQI) research, and carbon/sustainability analysis.
-      </p>
-      <div class="btn-row">
-        <a class="btn primary" href="https://my-research-portfolio-hkcurwv5s5kji8vcqnminn.streamlit.app" target="_blank" rel="noopener">
-          Open Python / Streamlit App
-        </a>
-        <a class="btn" href="https://github.com/kaifqureshi457-oss" target="_blank" rel="noopener">
-          GitHub Profile (@kaifqureshi457-oss)
-        </a>
-        <button class="btn" type="button" onclick="window.print()">Save / Print Summary</button>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <h1>Kaif Qureshi — Solar, AQI & Sustainability Hub</h1>
+        <p class="sub">
+          Unified portfolio combining solar PV generation & carbon ROI modeling, PM2.5 / NO2 / AQI scenario forecasting,
+          and sustainability research (B.Voc Solar Energy, 7.43 CGPA).
+        </p>
       </div>
-    </header>
-
-    <div class="tabs">
-      <button class="tab-btn active" type="button" onclick="showTab('sim', this)">Solar & Carbon ROI Simulator</button>
-      <button class="tab-btn" type="button" onclick="showTab('solar', this)">Solar PV & Analytics</button>
-      <button class="tab-btn" type="button" onclick="showTab('aqi', this)">AQI & Carbon Research</button>
+      <div class="actions">
+        <a class="btn primary" href="https://my-research-portfolio-hkcurwv5s5kji8vcqnminn.streamlit.app" target="_blank" rel="noopener">
+          Launch Python Streamlit App
+        </a>
+        <a class="btn" href="https://github.com/kaifqureshi457-oss/Renewable-energy-portfolio" target="_blank" rel="noopener">
+          Repository
+        </a>
+      </div>
     </div>
 
-    <!-- TAB 1: INTERACTIVE SIMULATOR -->
-    <section id="sim" class="panel active">
-      <div class="grid-2">
-        <div class="card">
-          <h2>Interactive System & Tariff Inputs</h2>
-          <div class="control">
-            <label><span>Solar PV Capacity</span><span id="kwVal">25 kW</span></label>
-            <input id="kw" type="range" min="5" max="250" step="5" value="25" oninput="recalc()" />
+    <div class="nav-tabs">
+      <button class="tab active" type="button" onclick="openTab('solarTab', this)">Solar Streamer & ROI</button>
+      <button class="tab" type="button" onclick="openTab('aqiTab', this)">PM2.5, NO2 & AQI Predictor</button>
+      <button class="tab" type="button" onclick="openTab('researchTab', this)">Research & Analytics</button>
+    </div>
+
+    <!-- TAB 1: SOLAR STREAMER & ROI -->
+    <section id="solarTab" class="pane active">
+      <div class="grid">
+        <div class="box">
+          <h2>Solar PV & Carbon Controls</h2>
+          <div class="field">
+            <label><span>System Capacity</span><span id="sKwLbl">25 kW</span></label>
+            <input id="sKw" type="range" min="5" max="250" step="5" value="25" oninput="updateSolar()" />
           </div>
-          <div class="control">
-            <label><span>Peak Sun Hours / Day</span><span id="pshVal">4.8 hrs</span></label>
-            <input id="psh" type="range" min="2.5" max="6.5" step="0.1" value="4.8" oninput="recalc()" />
+          <div class="field">
+            <label><span>Peak Sun Hours / Day</span><span id="sPshLbl">4.8 hrs</span></label>
+            <input id="sPsh" type="range" min="2.5" max="6.5" step="0.1" value="4.8" oninput="updateSolar()" />
           </div>
-          <div class="control">
-            <label><span>Grid / Diesel Tariff ($/kWh equiv.)</span><span id="tariffVal">$0.14</span></label>
-            <input id="tariff" type="range" min="0.06" max="0.35" step="0.01" value="0.14" oninput="recalc()" />
+          <div class="field">
+            <label><span>Electricity / Diesel Tariff ($/kWh)</span><span id="sTariffLbl">$0.14</span></label>
+            <input id="sTariff" type="range" min="0.06" max="0.35" step="0.01" value="0.14" oninput="updateSolar()" />
           </div>
-          <div class="control">
-            <label><span>Installed CapEx ($/kW)</span><span id="capexVal">$850</span></label>
-            <input id="capex" type="range" min="550" max="1500" step="25" value="850" oninput="recalc()" />
+          <div class="field">
+            <label><span>Carbon Credit Price ($/tCO2e)</span><span id="sCarbonLbl">$15</span></label>
+            <input id="sCarbon" type="range" min="0" max="100" step="5" value="15" oninput="updateSolar()" />
           </div>
-          <div class="control">
-            <label><span>Carbon Credit Price ($/tCO2e)</span><span id="carbonVal">$15</span></label>
-            <input id="carbon" type="range" min="0" max="100" step="5" value="15" oninput="recalc()" />
+          <div class="field">
+            <label><span>Simulated Hour of Day (Streamer)</span><span id="sHourLbl">12:00</span></label>
+            <input id="sHour" type="range" min="0" max="23" step="1" value="12" oninput="updateSolar()" />
           </div>
-          <p class="note">Adjust sliders to model annual generation, bill + carbon savings, and simple payback. Replace default assumptions with project-specific quotes as needed.</p>
+
+          <div class="kpis">
+            <div class="kpi">
+              <div class="k-lbl">Live Stream Output</div>
+              <div class="k-val" id="liveKwOut">18.4 kW</div>
+            </div>
+            <div class="kpi">
+              <div class="k-lbl">Annual Generation</div>
+              <div class="k-val" id="yrKwhOut">39,420 kWh</div>
+            </div>
+            <div class="kpi">
+              <div class="k-lbl">CO2 Avoided / Yr</div>
+              <div class="k-val" id="yrCo2Out">32.3 tCO2e</div>
+            </div>
+            <div class="kpi">
+              <div class="k-lbl">Annual Value</div>
+              <div class="k-val" id="yrValOut">$6,003</div>
+            </div>
+          </div>
+          <p class="hint">Slide "Simulated Hour of Day" to step through a 24-hour solar generation profile (0.80 PR, 0.82 kg CO2/kWh baseline).</p>
         </div>
 
-        <div class="card">
-          <h2>Estimated Annual & Financial Impact</h2>
-          <div class="kpi-grid">
-            <div class="kpi">
-              <div class="label">Annual Generation</div>
-              <div class="val" id="genOut">39,420 kWh</div>
-            </div>
-            <div class="kpi">
-              <div class="label">CO2 Avoided / Year</div>
-              <div class="val" id="co2Out">32.3 tCO2e</div>
-            </div>
-            <div class="kpi">
-              <div class="label">Annual Savings (Energy + Carbon)</div>
-              <div class="val" id="savOut">$6,003</div>
-            </div>
-            <div class="kpi">
-              <div class="label">Simple Payback</div>
-              <div class="val" id="pbOut">3.5 yrs</div>
-            </div>
-          </div>
-          <p class="note" id="summaryLine">
-            Total estimated CapEx: $21,250 • Grid emission factor modeled at 0.82 kg CO2/kWh.
-          </p>
+        <div class="box">
+          <h2>Hourly Solar Generation Stream (kW)</h2>
+          <canvas id="solarChart" height="240"></canvas>
+          <p class="hint">Replace the normalized daylight curve in code with your site-specific irradiance or PV inverter profile.</p>
         </div>
       </div>
     </section>
 
-    <!-- TAB 2: SOLAR & ANALYTICS -->
-    <section id="solar" class="panel">
-      <div class="card">
-        <h2>Solar Energy & Data Analytics Background</h2>
-        <ul>
-          <li><strong>Solar PV System Design & AutoCAD:</strong> Experience with photovoltaic system concepts, layout planning in AutoCAD, and practical energy generation analysis.</li>
-          <li><strong>Data Analytics & Automation:</strong> Built dashboards, analyzed structured operational datasets, and automated recurring reporting workflows during a 5-month Data Analyst internship.</li>
-          <li><strong>Applied Tools:</strong> Python, Streamlit, AutoCAD, data visualization, and foundational Linux/Docker familiarity.</li>
-        </ul>
+    <!-- TAB 2: PM2.5, NO2 & AQI PREDICTOR -->
+    <section id="aqiTab" class="pane">
+      <div class="grid">
+        <div class="box">
+          <h2>Pollutant Baseline & Forecast Inputs</h2>
+          <div class="field">
+            <label for="pollutantSel"><span>Primary Pollutant View</span></label>
+            <select id="pollutantSel" onchange="updateAqi()">
+              <option value="pm25">PM2.5 (µg/m³)</option>
+              <option value="no2">NO2 (µg/m³)</option>
+              <option value="aqi">Composite AQI Index</option>
+            </select>
+          </div>
+          <div class="field">
+            <label><span>Baseline PM2.5 (µg/m³)</span><span id="basePmLbl">68 µg/m³</span></label>
+            <input id="basePm" type="range" min="10" max="250" step="2" value="68" oninput="updateAqi()" />
+          </div>
+          <div class="field">
+            <label><span>Baseline NO2 (µg/m³)</span><span id="baseNo2Lbl">42 µg/m³</span></label>
+            <input id="baseNo2" type="range" min="5" max="180" step="1" value="42" oninput="updateAqi()" />
+          </div>
+          <div class="field">
+            <label><span>Emission / Traffic Change</span><span id="emShiftLbl">-15%</span></label>
+            <input id="emShift" type="range" min="-50" max="50" step="5" value="-15" oninput="updateAqi()" />
+          </div>
+          <div class="field">
+            <label><span>Dispersion / Wind Factor</span><span id="dispLbl">1.10x</span></label>
+            <input id="dispFactor" type="range" min="0.6" max="1.6" step="0.05" value="1.10" oninput="updateAqi()" />
+          </div>
+
+          <div class="kpis">
+            <div class="kpi">
+              <div class="k-lbl">Projected PM2.5</div>
+              <div class="k-val" id="predPmOut">52.5 µg/m³</div>
+            </div>
+            <div class="kpi">
+              <div class="k-lbl">Projected NO2</div>
+              <div class="k-val" id="predNo2Out">32.5 µg/m³</div>
+            </div>
+            <div class="kpi">
+              <div class="k-lbl">Projected AQI</div>
+              <div class="k-val" id="predAqiOut">138</div>
+            </div>
+            <div class="kpi">
+              <div class="k-lbl">AQI Category</div>
+              <div class="k-val" id="aqiCatOut">Moderate–Poor</div>
+            </div>
+          </div>
+          <p class="hint">Interactive scenario estimator for rapid what-if exploration; connect your Python model in Streamlit for trained ML forecasts.</p>
+        </div>
+
+        <div class="box">
+          <h2>24-Hour Pollutant & Forecast Trajectory</h2>
+          <canvas id="aqiChart" height="240"></canvas>
+          <p class="hint">Compares baseline diurnal variation against your adjusted scenario across 24 hours.</p>
+        </div>
       </div>
     </section>
 
-    <!-- TAB 3: AQI & CARBON RESEARCH -->
-    <section id="aqi" class="panel">
-      <div class="card">
-        <h2>Air Quality (AQI), Carbon Credits & Sustainability Work</h2>
-        <ul>
-          <li><strong>Urban Air Quality Research:</strong> Multi-year air quality analysis examining pollution patterns, environmental indicators, and policy relevance.</li>
-          <li><strong>Decentralized Solar & Carbon Finance:</strong> Researched how distributed solar generation, energy management, and carbon credit mechanisms intersect with practical sustainability goals.</li>
-          <li><strong>Interactive Python Exploration:</strong> Built an interactive web application to explore air quality trends, forecasts, and sustainability topics alongside this static dashboard.</li>
-        </ul>
+    <!-- TAB 3: RESEARCH & ANALYTICS -->
+    <section id="researchTab" class="pane">
+      <div class="grid">
+        <div class="box">
+          <h3>Air Quality & Sustainability Research</h3>
+          <ul>
+            <li><strong>Longitudinal Air Quality Analysis:</strong> Examined multi-year urban air pollution trends, seasonal shifts, and environmental indicators.</li>
+            <li><strong>Decentralized Solar & Carbon Credits:</strong> Evaluated distributed solar adoption, energy economics, and carbon credit mechanisms.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Solar PV & Data Analytics</h3>
+          <ul>
+            <li><strong>Solar PV & AutoCAD:</strong> Academic foundation in solar energy systems, PV layout planning, and performance evaluation.</li>
+            <li><strong>Data Analytics & Python:</strong> Built dashboards, automated recurring reports, and created interactive web prototypes.</li>
+          </ul>
+        </div>
       </div>
     </section>
   </div>
 
   <script>
-    function showTab(id, btn) {
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    const hours = Array.from({ length: 24 }, (_, h) => String(h).padStart(2, '0') + ':00');
+    const solarProfile = [
+      0, 0, 0, 0, 0, 0,
+      0.05, 0.18, 0.38, 0.60, 0.80, 0.94,
+      1.00, 0.96, 0.84, 0.65, 0.42, 0.18,
+      0.04, 0, 0, 0, 0, 0
+    ];
+    const diurnalWeights = [
+      0.72, 0.66, 0.62, 0.64, 0.75, 0.92,
+      1.15, 1.32, 1.38, 1.22, 1.05, 0.96,
+      0.90, 0.88, 0.92, 1.02, 1.18, 1.34,
+      1.40, 1.30, 1.14, 0.98, 0.86, 0.78
+    ];
+
+    let solarChart, aqiChart;
+
+    function openTab(id, btn) {
+      document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       document.getElementById(id).classList.add('active');
       btn.classList.add('active');
     }
-    function recalc() {
-      const kw = parseFloat(document.getElementById('kw').value);
-      const psh = parseFloat(document.getElementById('psh').value);
-      const tariff = parseFloat(document.getElementById('tariff').value);
-      const capexPerKw = parseFloat(document.getElementById('capex').value);
-      const carbonPrice = parseFloat(document.getElementById('carbon').value);
 
-      document.getElementById('kwVal').textContent = kw + ' kW';
-      document.getElementById('pshVal').textContent = psh.toFixed(1) + ' hrs';
-      document.getElementById('tariffVal').textContent = '$' + tariff.toFixed(2);
-      document.getElementById('capexVal').textContent = '$' + capexPerKw;
-      document.getElementById('carbonVal').textContent = '$' + carbonPrice;
+    function updateSolar() {
+      const kw = parseFloat(document.getElementById('sKw').value);
+      const psh = parseFloat(document.getElementById('sPsh').value);
+      const tariff = parseFloat(document.getElementById('sTariff').value);
+      const carbon = parseFloat(document.getElementById('sCarbon').value);
+      const hour = parseInt(document.getElementById('sHour').value, 10);
 
-      // 0.80 performance ratio accounts for system/inverter/temperature losses
+      document.getElementById('sKwLbl').textContent = kw + ' kW';
+      document.getElementById('sPshLbl').textContent = psh.toFixed(1) + ' hrs';
+      document.getElementById('sTariffLbl').textContent = '$' + tariff.toFixed(2);
+      document.getElementById('sCarbonLbl').textContent = '$' + carbon;
+      document.getElementById('sHourLbl').textContent = hours[hour];
+
+      const peakFactor = Math.min(1.0, psh / 5.2);
+      const series = solarProfile.map(v => +(kw * v * peakFactor * 0.85).toFixed(2));
+      const liveKw = series[hour];
+
       const annualKwh = kw * psh * 365 * 0.80;
       const co2Tons = (annualKwh * 0.82) / 1000;
-      const energySavings = annualKwh * tariff;
-      const carbonValue = co2Tons * carbonPrice;
-      const totalSavings = energySavings + carbonValue;
-      const totalCapex = kw * capexPerKw;
-      const payback = totalSavings > 0 ? (totalCapex / totalSavings) : 0;
+      const totalVal = (annualKwh * tariff) + (co2Tons * carbon);
 
-      document.getElementById('genOut').textContent = Math.round(annualKwh).toLocaleString() + ' kWh';
-      document.getElementById('co2Out').textContent = co2Tons.toFixed(1) + ' tCO2e';
-      document.getElementById('savOut').textContent = '$' + Math.round(totalSavings).toLocaleString();
-      document.getElementById('pbOut').textContent = payback.toFixed(1) + ' yrs';
-      document.getElementById('summaryLine').textContent =
-        'Total estimated CapEx: $' + Math.round(totalCapex).toLocaleString() +
-        ' • Includes ~$' + Math.round(carbonValue).toLocaleString() + '/yr estimated carbon value at 0.82 kg CO2/kWh.';
+      document.getElementById('liveKwOut').textContent = liveKw.toFixed(1) + ' kW';
+      document.getElementById('yrKwhOut').textContent = Math.round(annualKwh).toLocaleString() + ' kWh';
+      document.getElementById('yrCo2Out').textContent = co2Tons.toFixed(1) + ' tCO2e';
+      document.getElementById('yrValOut').textContent = '$' + Math.round(totalVal).toLocaleString();
+
+      if (!solarChart) {
+        solarChart = new Chart(document.getElementById('solarChart'), {
+          type: 'line',
+          data: {
+            labels: hours,
+            datasets: [{
+              label: 'Output (kW)',
+              data: series,
+              borderColor: '#0f766e',
+              backgroundColor: 'rgba(15, 118, 110, 0.12)',
+              fill: true,
+              tension: 0.35
+            }]
+          },
+          options: { responsive: true, scales: { y: { beginAtZero: true } } }
+        });
+      } else {
+        solarChart.data.datasets[0].data = series;
+        solarChart.update();
+      }
     }
-    recalc();
+
+    function updateAqi() {
+      const mode = document.getElementById('pollutantSel').value;
+      const basePm = parseFloat(document.getElementById('basePm').value);
+      const baseNo2 = parseFloat(document.getElementById('baseNo2').value);
+      const shiftPct = parseFloat(document.getElementById('emShift').value);
+      const disp = parseFloat(document.getElementById('dispFactor').value);
+
+      document.getElementById('basePmLbl').textContent = basePm + ' µg/m³';
+      document.getElementById('baseNo2Lbl').textContent = baseNo2 + ' µg/m³';
+      document.getElementById('emShiftLbl').textContent = (shiftPct > 0 ? '+' : '') + shiftPct + '%';
+      document.getElementById('dispLbl').textContent = disp.toFixed(2) + 'x';
+
+      const mult = (1 + shiftPct / 100) / disp;
+      const predPm = Math.max(2, basePm * mult);
+      const predNo2 = Math.max(2, baseNo2 * mult);
+      const calcAqi = (pm, no2) => Math.round(pm * 1.65 + no2 * 0.65);
+      const baseAqi = calcAqi(basePm, baseNo2);
+      const predAqi = calcAqi(predPm, predNo2);
+
+      let cat = 'Good';
+      if (predAqi > 300) cat = 'Severe';
+      else if (predAqi > 200) cat = 'Poor';
+      else if (predAqi > 100) cat = 'Moderate';
+
+      document.getElementById('predPmOut').textContent = predPm.toFixed(1) + ' µg/m³';
+      document.getElementById('predNo2Out').textContent = predNo2.toFixed(1) + ' µg/m³';
+      document.getElementById('predAqiOut').textContent = String(predAqi);
+      document.getElementById('aqiCatOut').textContent = cat;
+
+      const pickVal = (pm, no2, aqi) => mode === 'pm25' ? pm : (mode === 'no2' ? no2 : aqi);
+      const b0 = pickVal(basePm, baseNo2, baseAqi);
+      const p0 = pickVal(predPm, predNo2, predAqi);
+
+      const baseSeries = diurnalWeights.map(w => +(b0 * w).toFixed(1));
+      const predSeries = diurnalWeights.map(w => +(p0 * w).toFixed(1));
+
+      if (!aqiChart) {
+        aqiChart = new Chart(document.getElementById('aqiChart'), {
+          type: 'line',
+          data: {
+            labels: hours,
+            datasets: [
+              { label: 'Baseline', data: baseSeries, borderColor: '#64748b', tension: 0.3 },
+              { label: 'Forecast Scenario', data: predSeries, borderColor: '#0f766e', tension: 0.3 }
+            ]
+          },
+          options: { responsive: true, scales: { y: { beginAtZero: true } } }
+        });
+      } else {
+        aqiChart.data.datasets[0].data = baseSeries;
+        aqiChart.data.datasets[1].data = predSeries;
+        aqiChart.update();
+      }
+    }
+
+    updateSolar();
+    updateAqi();
   </script>
 </body>
 </html>
