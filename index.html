@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kaif Qureshi — Solar Energy, Analytics & Carbon ROI Portfolio</title>
+  <style>
+    :root {
+      --bg: #f6f8fa;
+      --card: #ffffff;
+      --text: #1f2328;
+      --muted: #57606a;
+      --accent: #0969da;
+      --accent-soft: #ddf4ff;
+      --green: #1a7f37;
+      --border: #d0d7de;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+    header.hero {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    .subtitle { color: var(--muted); margin: 0 0 18px; font-size: 15px; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      padding: 9px 15px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: #fff;
+      cursor: pointer;
+    }
+    .btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .tab-btn {
+      padding: 9px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+    }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+    .card h2, .card h3 { margin-top: 0; }
+    .control { margin-bottom: 14px; }
+    .control label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .control input[type="range"] { width: 100%; }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .kpi {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      background: #fafbfc;
+    }
+    .kpi .label { font-size: 12px; color: var(--muted); }
+    .kpi .val { font-size: 22px; font-weight: 700; color: var(--green); margin-top: 4px; }
+    ul { padding-left: 20px; margin: 8px 0 0; }
+    li { margin-bottom: 6px; }
+    .note { font-size: 13px; color: var(--muted); margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <span class="badge">Always-On Portfolio • Solar Energy • Data Analytics • Sustainability</span>
+      <h1>Kaif Qureshi — Energy & Sustainability Portfolio</h1>
+      <p class="subtitle">
+        B.Voc in Solar Energy (7.43 CGPA) with hands-on experience in data analytics, automated reporting,
+        PV & AutoCAD layout work, urban air quality (AQI) research, and carbon/sustainability analysis.
+      </p>
+      <div class="btn-row">
+        <a class="btn primary" href="https://my-research-portfolio-hkcurwv5s5kji8vcqnminn.streamlit.app" target="_blank" rel="noopener">
+          Open Python / Streamlit App
+        </a>
+        <a class="btn" href="https://github.com/kaifqureshi457-oss" target="_blank" rel="noopener">
+          GitHub Profile (@kaifqureshi457-oss)
+        </a>
+        <button class="btn" type="button" onclick="window.print()">Save / Print Summary</button>
+      </div>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" type="button" onclick="showTab('sim', this)">Solar & Carbon ROI Simulator</button>
+      <button class="tab-btn" type="button" onclick="showTab('solar', this)">Solar PV & Analytics</button>
+      <button class="tab-btn" type="button" onclick="showTab('aqi', this)">AQI & Carbon Research</button>
+    </div>
+
+    <!-- TAB 1: INTERACTIVE SIMULATOR -->
+    <section id="sim" class="panel active">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Interactive System & Tariff Inputs</h2>
+          <div class="control">
+            <label><span>Solar PV Capacity</span><span id="kwVal">25 kW</span></label>
+            <input id="kw" type="range" min="5" max="250" step="5" value="25" oninput="recalc()" />
+          </div>
+          <div class="control">
+            <label><span>Peak Sun Hours / Day</span><span id="pshVal">4.8 hrs</span></label>
+            <input id="psh" type="range" min="2.5" max="6.5" step="0.1" value="4.8" oninput="recalc()" />
+          </div>
+          <div class="control">
+            <label><span>Grid / Diesel Tariff ($/kWh equiv.)</span><span id="tariffVal">$0.14</span></label>
+            <input id="tariff" type="range" min="0.06" max="0.35" step="0.01" value="0.14" oninput="recalc()" />
+          </div>
+          <div class="control">
+            <label><span>Installed CapEx ($/kW)</span><span id="capexVal">$850</span></label>
+            <input id="capex" type="range" min="550" max="1500" step="25" value="850" oninput="recalc()" />
+          </div>
+          <div class="control">
+            <label><span>Carbon Credit Price ($/tCO2e)</span><span id="carbonVal">$15</span></label>
+            <input id="carbon" type="range" min="0" max="100" step="5" value="15" oninput="recalc()" />
+          </div>
+          <p class="note">Adjust sliders to model annual generation, bill + carbon savings, and simple payback. Replace default assumptions with project-specific quotes as needed.</p>
+        </div>
+
+        <div class="card">
+          <h2>Estimated Annual & Financial Impact</h2>
+          <div class="kpi-grid">
+            <div class="kpi">
+              <div class="label">Annual Generation</div>
+              <div class="val" id="genOut">39,420 kWh</div>
+            </div>
+            <div class="kpi">
+              <div class="label">CO2 Avoided / Year</div>
+              <div class="val" id="co2Out">32.3 tCO2e</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Annual Savings (Energy + Carbon)</div>
+              <div class="val" id="savOut">$6,003</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Simple Payback</div>
+              <div class="val" id="pbOut">3.5 yrs</div>
+            </div>
+          </div>
+          <p class="note" id="summaryLine">
+            Total estimated CapEx: $21,250 • Grid emission factor modeled at 0.82 kg CO2/kWh.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: SOLAR & ANALYTICS -->
+    <section id="solar" class="panel">
+      <div class="card">
+        <h2>Solar Energy & Data Analytics Background</h2>
+        <ul>
+          <li><strong>Solar PV System Design & AutoCAD:</strong> Experience with photovoltaic system concepts, layout planning in AutoCAD, and practical energy generation analysis.</li>
+          <li><strong>Data Analytics & Automation:</strong> Built dashboards, analyzed structured operational datasets, and automated recurring reporting workflows during a 5-month Data Analyst internship.</li>
+          <li><strong>Applied Tools:</strong> Python, Streamlit, AutoCAD, data visualization, and foundational Linux/Docker familiarity.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TAB 3: AQI & CARBON RESEARCH -->
+    <section id="aqi" class="panel">
+      <div class="card">
+        <h2>Air Quality (AQI), Carbon Credits & Sustainability Work</h2>
+        <ul>
+          <li><strong>Urban Air Quality Research:</strong> Multi-year air quality analysis examining pollution patterns, environmental indicators, and policy relevance.</li>
+          <li><strong>Decentralized Solar & Carbon Finance:</strong> Researched how distributed solar generation, energy management, and carbon credit mechanisms intersect with practical sustainability goals.</li>
+          <li><strong>Interactive Python Exploration:</strong> Built an interactive web application to explore air quality trends, forecasts, and sustainability topics alongside this static dashboard.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    function showTab(id, btn) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+    }
+    function recalc() {
+      const kw = parseFloat(document.getElementById('kw').value);
+      const psh = parseFloat(document.getElementById('psh').value);
+      const tariff = parseFloat(document.getElementById('tariff').value);
+      const capexPerKw = parseFloat(document.getElementById('capex').value);
+      const carbonPrice = parseFloat(document.getElementById('carbon').value);
+
+      document.getElementById('kwVal').textContent = kw + ' kW';
+      document.getElementById('pshVal').textContent = psh.toFixed(1) + ' hrs';
+      document.getElementById('tariffVal').textContent = '$' + tariff.toFixed(2);
+      document.getElementById('capexVal').textContent = '$' + capexPerKw;
+      document.getElementById('carbonVal').textContent = '$' + carbonPrice;
+
+      // 0.80 performance ratio accounts for system/inverter/temperature losses
+      const annualKwh = kw * psh * 365 * 0.80;
+      const co2Tons = (annualKwh * 0.82) / 1000;
+      const energySavings = annualKwh * tariff;
+      const carbonValue = co2Tons * carbonPrice;
+      const totalSavings = energySavings + carbonValue;
+      const totalCapex = kw * capexPerKw;
+      const payback = totalSavings > 0 ? (totalCapex / totalSavings) : 0;
+
+      document.getElementById('genOut').textContent = Math.round(annualKwh).toLocaleString() + ' kWh';
+      document.getElementById('co2Out').textContent = co2Tons.toFixed(1) + ' tCO2e';
+      document.getElementById('savOut').textContent = '$' + Math.round(totalSavings).toLocaleString();
+      document.getElementById('pbOut').textContent = payback.toFixed(1) + ' yrs';
+      document.getElementById('summaryLine').textContent =
+        'Total estimated CapEx: $' + Math.round(totalCapex).toLocaleString() +
+        ' • Includes ~$' + Math.round(carbonValue).toLocaleString() + '/yr estimated carbon value at 0.82 kg CO2/kWh.';
+    }
+    recalc();
+  </script>
+</body>
+</html>
